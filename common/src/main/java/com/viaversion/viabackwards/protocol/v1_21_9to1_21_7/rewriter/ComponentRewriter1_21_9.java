@@ -25,8 +25,36 @@ import com.viaversion.viabackwards.api.rewriters.text.NBTComponentRewriter;
 import com.viaversion.viaversion.api.connection.UserConnection;
 import com.viaversion.viaversion.api.minecraft.data.StructuredDataKey;
 import com.viaversion.viaversion.protocols.v1_21_7to1_21_9.packet.ClientboundPacket1_21_9;
+import java.util.HashMap;
+import java.util.Map;
 
 public final class ComponentRewriter1_21_9 extends NBTComponentRewriter<ClientboundPacket1_21_9> {
+    private static final Map<String, String> SPRITE_MAP = new HashMap<>();
+
+    static {
+        SPRITE_MAP.put("minecraft:item/experience_bottle", "XP");
+        SPRITE_MAP.put("minecraft:item/music_disc_5", "disc");
+        SPRITE_MAP.put("minecraft:item/music_disc_11", "disc");
+        SPRITE_MAP.put("minecraft:item/music_disc_13", "disc");
+        SPRITE_MAP.put("minecraft:item/music_disc_blocks", "disc");
+        SPRITE_MAP.put("minecraft:item/music_disc_cat", "disc");
+        SPRITE_MAP.put("minecraft:item/music_disc_chirp", "disc");
+        SPRITE_MAP.put("minecraft:item/music_disc_creator", "disc");
+        SPRITE_MAP.put("minecraft:item/music_disc_creator_music_box", "disc");
+        SPRITE_MAP.put("minecraft:item/music_disc_far", "disc");
+        SPRITE_MAP.put("minecraft:item/music_disc_lava_chicken", "disc");
+        SPRITE_MAP.put("minecraft:item/music_disc_mall", "disc");
+        SPRITE_MAP.put("minecraft:item/music_disc_mellohi", "disc");
+        SPRITE_MAP.put("minecraft:item/music_disc_otherside", "disc");
+        SPRITE_MAP.put("minecraft:item/music_disc_pigstep", "disc");
+        SPRITE_MAP.put("minecraft:item/music_disc_precipice", "disc");
+        SPRITE_MAP.put("minecraft:item/music_disc_relic", "disc");
+        SPRITE_MAP.put("minecraft:item/music_disc_stall", "disc");
+        SPRITE_MAP.put("minecraft:item/music_disc_strad", "disc");
+        SPRITE_MAP.put("minecraft:item/music_disc_tears", "disc");
+        SPRITE_MAP.put("minecraft:item/music_disc_wait", "disc");
+        SPRITE_MAP.put("minecraft:item/music_disc_ward", "disc");
+    }
 
     public ComponentRewriter1_21_9(final BackwardsProtocol<ClientboundPacket1_21_9, ?, ?, ?> protocol) {
         super(protocol);
@@ -49,8 +77,10 @@ public final class ComponentRewriter1_21_9 extends NBTComponentRewriter<Clientbo
             tag.put("text", fallback);
             tag.remove("type");
         }
-        if (tag.remove("sprite") != null) {
-            tag.put("text", fallback);
+        final var sprite = tag.remove("sprite");
+        if (sprite != null) {
+            final var mapped = SPRITE_MAP.getOrDefault(sprite.asRawString(), fallback);
+            tag.putString("text", mapped);
         }
         if (tag.remove("player") != null) {
             tag.put("text", fallback);
