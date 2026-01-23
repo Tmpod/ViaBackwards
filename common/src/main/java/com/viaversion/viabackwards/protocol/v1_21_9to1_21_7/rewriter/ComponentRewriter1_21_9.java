@@ -32,6 +32,8 @@ public final class ComponentRewriter1_21_9 extends NBTComponentRewriter<Clientbo
     private static final Map<String, String> SPRITE_MAP = new HashMap<>();
 
     static {
+        SPRITE_MAP.put("minecraft:item/arrow", "arrow");
+        SPRITE_MAP.put("minecraft:item/spectral_arrow", "arrow");
         SPRITE_MAP.put("minecraft:item/experience_bottle", "XP");
         SPRITE_MAP.put("minecraft:item/music_disc_5", "disc");
         SPRITE_MAP.put("minecraft:item/music_disc_11", "disc");
