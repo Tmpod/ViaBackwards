@@ -81,8 +81,8 @@ public final class ComponentRewriter1_21_9 extends NBTComponentRewriter<Clientbo
         }
         final var sprite = tag.remove("sprite");
         if (sprite != null) {
-            final var mapped = SPRITE_MAP.getOrDefault(sprite.asRawString(), fallback);
-            tag.putString("text", mapped);
+            final var mapped = SPRITE_MAP.get(sprite.asRawString());
+            tag.put("text", mapped == null ? fallback : new StringTag(mapped));
         }
         if (tag.remove("player") != null) {
             tag.put("text", fallback);
