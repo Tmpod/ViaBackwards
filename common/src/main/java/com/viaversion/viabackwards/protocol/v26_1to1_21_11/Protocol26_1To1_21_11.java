@@ -87,14 +87,8 @@ public final class Protocol26_1To1_21_11 extends BackwardsProtocol<ClientboundPa
         super.registerPackets();
 
         // Remove new environment attributes
-        registryDataRewriter.addHandler("dimension_type", (key, tag) -> {
-            final CompoundTag attributes = tag.getCompoundTag("attributes");
-            if (attributes != null) {
-                removeNamespaced(attributes, "visual/block_light_tint");
-                removeNamespaced(attributes, "visual/night_vision_color");
-                removeNamespaced(attributes, "visual/ambient_light_color");
-            }
-        });
+        registryDataRewriter.addHandler("dimension_type", (key, tag) -> removeEnvironmentAttributes(tag.getCompoundTag("attributes")));
+        registryDataRewriter.addHandler("timeline", (key, tag) -> removeEnvironmentAttributes(tag.getCompoundTag("tracks")));
 
         // Move around entity variant names and sounds
         registryDataRewriter.addHandler("wolf_sound_variant", (key, tag) -> {
@@ -151,6 +145,15 @@ public final class Protocol26_1To1_21_11 extends BackwardsProtocol<ClientboundPa
             wrapper.write(Types.LONG, dayTime);
             wrapper.write(Types.BOOLEAN, advanceTime);
         });
+    }
+
+    private void removeEnvironmentAttributes(final CompoundTag tag) {
+        if (tag == null) {
+            return;
+        }
+        removeNamespaced(tag, "visual/block_light_tint");
+        removeNamespaced(tag, "visual/night_vision_color");
+        removeNamespaced(tag, "visual/ambient_light_color");
     }
 
     private void removeEntityNamePrefix(final String key, final CompoundTag tag) {
